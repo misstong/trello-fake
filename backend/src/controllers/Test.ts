@@ -1,6 +1,9 @@
-const {Controller, Get, Params, Query, Post, Body} = require('koa-ts-controllers')
-const {IsNumberString} = require('class-validator')
+import { Context } from "koa"
+
+const {Controller, Get, Params, Query, Post, Body, Header, Ctx} = require('koa-ts-controllers')
+const {IsNumberString, IsNotEmpty} = require('class-validator')
 const Boom = require('@hapi/Boom')
+
 
 
 class GetUsersQuery{
@@ -10,6 +13,18 @@ class GetUsersQuery{
     @IsNumberString()
     to: number
 
+}
+
+class PostUserBody {
+    @IsNotEmpty({
+        message: 'name不能为空' 
+    })
+    name: string
+
+    @IsNotEmpty({
+        message: 'password不能为空'
+    })
+    password: string
 }
 
 @Controller('/test')
@@ -47,15 +62,31 @@ class TestController {
         return '...'
     }
 
+    // @Post('/user')
+    // public async getUser(
+    //     @Body() user: {
+    //         name:string,
+    //         password: string
+    //     }
+    // ) {
+    //     console.log(user)
+    //     return 'IIII'
+
+    // }
+
     @Post('/user')
-    public async getUser(
-        @Body() user: {
-            name:string,
-            password: string
-        }
+    public async createUser(
+        @Ctx() ctx: Context,
+        @Body() user: PostUserBody,
+        @Header() h: any
     ) {
-        console.log(user)
-        return 'IIII'
+
+        ctx.status = 201
+        return {
+            id:1,
+            name:user.name,
+            createdAt: Date.now()
+        }
 
     }
 }
