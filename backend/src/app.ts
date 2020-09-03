@@ -12,6 +12,12 @@ const app = new Koa();
 const router = new KoaRouter();
 
 (async() => {
+
+    const db = new Sequelize({
+        ...configs.database,
+        models: [__dirname+'/models/**/*']
+    })
+    
     await bootstrapControllers(app,
         {
             router: router,
