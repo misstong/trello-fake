@@ -16,7 +16,7 @@ const configs = {
             host: 'localhost',
             port: 8080
         },
-        database: databaseConfig as IDatabaseConfig,
+        database: databaseConfig.development as IDatabaseConfig,
         storage: {
             dir: path.resolve(__dirname, '../attachments'),
             prefix: '/public/attachments'
@@ -27,7 +27,7 @@ const configs = {
             host: 'localhost',
             port: 8080
         },
-        database: databaseConfig as IDatabaseConfig,
+        database: databaseConfig.test as IDatabaseConfig,
         storage: {
             dir: path.resolve(__dirname, '../attachments'),
             prefix: '/public/attachments'
@@ -38,7 +38,7 @@ const configs = {
             host: 'localhost',
             port: 8080
         },
-        database: databaseConfig as IDatabaseConfig,
+        database: databaseConfig.production as IDatabaseConfig,
         storage: {
             dir: path.resolve(__dirname, '../attachments'),
             prefix: '/public/attachments'

@@ -6,6 +6,7 @@ const { bootstrapControllers } = require('koa-ts-controllers')
 const Boom = require('@hapi/Boom')
 // const KoaBodyParser = require('koa-bodyparser')
 const KoaBody = require('koa-body')
+const {Sequelize} = require('sequelize-typescript')
 
 const app = new Koa();
 const router = new KoaRouter();
