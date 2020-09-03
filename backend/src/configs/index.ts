@@ -1,4 +1,5 @@
 const databaseConfig = require('./database.json')
+const path = require('path')
 
 interface IDatabaseConfig {
     username: string,
@@ -15,18 +16,32 @@ const configs = {
             host: 'localhost',
             port: 8080
         },
-        database: databaseConfig as IDatabaseConfig
+        database: databaseConfig as IDatabaseConfig,
+        storage: {
+            dir: path.resolve(__dirname, '../attachments'),
+            prefix: '/public/attachments'
+        }
     },
     test: {
         server: {
             host: 'localhost',
             port: 8080
+        },
+        database: databaseConfig as IDatabaseConfig,
+        storage: {
+            dir: path.resolve(__dirname, '../attachments'),
+            prefix: '/public/attachments'
         }
     },
     production: {
         server: {
             host: 'localhost',
             port: 8080
+        },
+        database: databaseConfig as IDatabaseConfig,
+        storage: {
+            dir: path.resolve(__dirname, '../attachments'),
+            prefix: '/public/attachments'
         }
     }
 }

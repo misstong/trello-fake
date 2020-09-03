@@ -4,7 +4,8 @@ import { Context } from 'vm';
 const KoaRouter = require('koa-router')
 const { bootstrapControllers } = require('koa-ts-controllers')
 const Boom = require('@hapi/Boom')
-const KoaBodyParser = require('koa-bodyparser')
+// const KoaBodyParser = require('koa-bodyparser')
+const KoaBody = require('koa-body')
 
 const app = new Koa();
 const router = new KoaRouter();
@@ -38,7 +39,14 @@ const router = new KoaRouter();
                 ctx.body = body;
             }
         });
-        app.use(KoaBodyParser());
+        // app.use(KoaBodyParser());
+        app.use(KoaBody({
+            multipart: true,
+            formidable: {
+                uploadDir: configs.storage.dir,
+                keepExtensions: true
+            }
+        }))
         app.use(router.routes());
         app.listen(configs.server.port, configs.server.host, ()=>{
             console.log(`服务启动成功： http://${configs.server.host}:${configs.server.port}`);
