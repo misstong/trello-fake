@@ -20,6 +20,9 @@ const configs = {
         storage: {
             dir: path.resolve(__dirname, '../attachments'),
             prefix: '/public/attachments'
+        },
+        jwt: {
+            privateKey: 'tang'
         }
     },
     test: {
@@ -31,6 +34,9 @@ const configs = {
         storage: {
             dir: path.resolve(__dirname, '../attachments'),
             prefix: '/public/attachments'
+        },
+        jwt: {
+            privateKey: 'tang'
         }
     },
     production: {
@@ -42,6 +48,9 @@ const configs = {
         storage: {
             dir: path.resolve(__dirname, '../attachments'),
             prefix: '/public/attachments'
+        },
+        jwt: {
+            privateKey: 'tang'
         }
     }
 }
