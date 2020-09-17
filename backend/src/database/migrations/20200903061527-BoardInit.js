@@ -12,7 +12,7 @@ module.exports = {
       id: {
         type: Sequelize.INTEGER.UNSIGNED,
         primaryKey: true,
-        autoIncreament: true
+        autoIncrement: true
       },
       userId: {
         type: Sequelize.INTEGER.UNSIGNED,

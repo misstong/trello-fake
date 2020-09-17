@@ -34,6 +34,9 @@ export default {
             if(!this.closed) {
                 this.close()
             }
+            if(this.onClose) {
+                this.onClose()
+            }
         }, this.duration)
     },
     methods: {

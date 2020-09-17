@@ -35,6 +35,63 @@ input {
     background: #5AAC44;
     color: #fff;
 }
+.btn.btn-icon {
+    margin: 0 4px 0 0;
+    padding: 0 10px;
+    height: 32px;
+    background-color: hsla(0,0%,100%,.3);
+    color: #fff;
+    line-height: 32px;
+}
+.icon {
+    display: inline-block;
+    height: 32px;
+    line-height: 32px;
+    min-width: 32px;
+    font-family: trellicons;
+    font-style: normal;
+    font-weight: 400;
+    color: #fff;
+    font-size: 20px;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: bottom;
+    transition-duration: 85ms;
+    transition-timing-function: ease;
+}
+.icon.icon-home:before {
+    content: "\E933";
+}
+.icon.icon-board:before {
+    content: "\E90A";
+}
+.icon.icon-add:before {
+    content: "\E901";
+}
+.icon.icon-more:before {
+    content: "\E94B";
+}
+.icon.icon-description:before {
+    content: "\E91D";
+}
+.icon.icon-comment:before {
+    content: "\E91A";
+}
+.icon.icon-attachment:before {
+    content: "\E908";
+}
+.icon.icon-card:before {
+    content: "\E910";
+}
+.icon-card-cover:before {
+    content: "\E911";
+}
+.icon-activity:before {
+    content: "\E900";
+}
+.btn-icon .txt {
+    padding: 0 8px 0 2px;
+}
 #register-login {
     margin: 0;
     display: inline-block;
@@ -207,8 +264,8 @@ input {
     font-size: 16px
 }
 .icon.icon-close:before {
-    /* content: "\E918"; */
-    content: 'X';
+    content: "\E918";
+    /* content: 'X'; */
 }
 .message .icon-close:focus {
     outline-width: 0
@@ -218,3 +275,102 @@ input {
     color: #909399
 }
 
+header{
+    display: flex;
+    justify-content: space-between;
+    background: #026aa7;
+}
+
+header .logo {
+    display: block;
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%);
+    top: 5px;
+    background: url("../images/header-logo-2x.png") no-repeat 100% 0/80px 30px;
+    cursor: pointer;
+    height: 30px;
+    width: 80px;
+}
+header .right {
+    display: flex;
+    justify-content: flex-end;
+    flex-grow: 1;
+}
+
+header .avatar{
+    height: 32px;
+    width: 32px;
+    line-height: 32px;
+}
+
+.popup-container {
+    position: relative;
+}
+
+.popup {
+    position: absolute;
+    background: #fff;
+    border-radius: 3px;
+    box-shadow: 0 8px 16px -4px rgba(9,30,66,.25), 0 0 0 1px rgba(9,30,66,.08);
+    width: 304px;
+    z-index: 9999;
+}
+
+.popup-header {
+    position: relative;
+    margin: 8px 0;
+    text-align: center;
+}
+.popup-header-close {
+    position: absolute;
+    top: -8px;
+    right: 0;
+    padding: 5px 12px 10px 8px;
+}
+.popup-header-close .icon {
+    color: #6b778c;
+    cursor: pointer;
+}
+
+.popup-menu-list li {
+    cursor: pointer;
+    padding: 6px 12px;
+    color: #172b4d;
+}
+.popup-menu-list li:hover {
+    background-color: rgba(9,30,66,.04);
+}
+ul {
+    list-style: none;
+}
+.popup-title {
+    display: block;
+    padding: 0 32px;
+    margin: 0 12px;
+    box-sizing: border-box;
+    line-height: 32px;
+    color: #5e6c84;
+    border-bottom: 1px solid rgba(9,30,66,.13);
+}
+.popup-content {
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 0 12px 12px;
+}
+.popup-menu-list li.separator {
+    margin: 5px 0;
+    padding: 0;
+    border-bottom: 1px solid rgba(9,30,66,.13);
+}
+html, body {
+    height: 100%;
+    color: #172b4d;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+}
+html, body, ul, h1, h2, h3, h4, h5, h6, p {
+    margin: 0;
+    padding: 0;
+}
