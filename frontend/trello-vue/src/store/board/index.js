@@ -30,6 +30,7 @@ export default {
             try{
                 let rs= await getBoard(id);
                 commit('addBoard',rs.data)
+                console.log('getBoard',id,rs.data)
                 return rs
             } catch(e){
                 console.log('')
