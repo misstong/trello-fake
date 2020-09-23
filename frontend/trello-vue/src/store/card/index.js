@@ -8,7 +8,7 @@ export default {
     },
 
     getters: {
-        getCard: ({cards}) => cardId => cards.find(card=>card.id===cardId),
+        getCard: ({cards}) => cardId => cards.find(card=>card.id==cardId),
         getCards: ({cards}) => boardListId => cards.filter( card => card.boardListId == boardListId ),
     },
     mutations: {

@@ -1,5 +1,5 @@
 <template>
-    <div class="window-overlay" style="display: block" v-if="list">
+    <div class="window-overlay" style="display: block" v-if="list && card">
         <div class="popup">
             <div class="popup-header">
                 <div class="popup-title">
@@ -234,7 +234,8 @@ export default {
                 return this.$store.state.server;
             },
             list() {
-                console.log('card getlist')
+                console.log('card getlist',typeof this.$route.params.listId)
+                console.log(this.$store.state.list)
                 return this.$store.getters['list/getList'](this.$route.params.listId)
             },
             card() {

@@ -7,7 +7,7 @@ export default {
     },
     getters:{
         getLists: ({lists}) => boardId => lists.filter(list=>list.boardId == boardId),
-        getList: ({lists}) => listId => lists.find(list=>list.id===listId)
+        getList: ({lists}) => listId => lists.find(list=>list.id==listId)
     },
     actions: {
         getLists: async ({commit}, boardId) =>{
