@@ -8,11 +8,11 @@
                 <t-list :key="list.id"
                     v-for="list of lists"
                     :data="list"
-                   
-                    ></t-list>
- <!-- @dragStart="dragStart"
+                     @dragStart="dragStart"
                     @dragMove="dragMove"
-                    @dragEnd="dragEnd" -->
+                    @dragEnd="dragEnd"
+                    ></t-list>
+
                 <div class="list-wrap no-content" :class="{'list-adding': listAdding}"> 
                     <div class="list-add" @click="showListAdding">
                         <span class="icon icon-add"></span>
@@ -193,7 +193,76 @@ export default {
             }else{
                 this.$refs.newListName.focus()
             }
-        }
+        },
+         dragStart(e) {
+                let el = e.component.$el;
+                let board = el.parentNode;
+                let lists = [...board.querySelectorAll('.list-wrap')];
+                el._index = lists.findIndex(list => list === el);
+            },
+            dragMove(e) {
+                let el = e.component.$el;
+                let board = el.parentNode;
+                let lists = [...board.querySelectorAll('.list-wrap')];
+                let currentIndex = lists.findIndex( list => list === el );
+
+                lists.forEach( (list, index) => {
+                    if ( index !== currentIndex  ) {
+                        let clientRect = list.getBoundingClientRect();
+                        if (
+                            e.x >= clientRect.left
+                            &&
+                            e.x <= clientRect.right
+                            &&
+                            e.y >= clientRect.top
+                            &&
+                            e.y <= clientRect.bottom
+                        ) {
+                            if (currentIndex < index) {//鼠标移动到后面的list上，把拖拽元素加到list后面元素之前
+                                board.insertBefore(el, list.nextElementSibling);
+                            } else {
+                                board.insertBefore(el, list);
+                            }
+                        }
+                    }
+                } );
+            },
+            async dragEnd(e) {
+                let el = e.component.$el;
+                let board = el.parentNode;
+                let lists = [...board.querySelectorAll('.list-wrap-content')];
+                let currentIndex = lists.findIndex(list => list === el);
+                console.log('dragend')
+
+                // 判断一下当前这个元素是否移动了
+                // console.log(el._index, currentIndex);
+                if (el._index !== currentIndex) {
+
+                    let newOrder;
+
+                    // 获取当前所在位置的上一个列表和下一个列表的order值
+                    let prevOrder = lists[currentIndex - 1] && parseFloat( lists[currentIndex - 1].dataset.order );
+                    let nextOrder = lists[currentIndex + 1] && parseFloat( lists[currentIndex + 1].dataset.order );
+
+                    console.log(prevOrder, nextOrder);
+                    if (currentIndex === 0) {
+                        newOrder = nextOrder / 2;
+                    } else if (currentIndex === lists.length - 1) {
+                        newOrder = prevOrder + 65535;
+                    } else {
+                        newOrder = prevOrder + (nextOrder - prevOrder) / 2;
+                    }
+                    console.log('idd',e.component.data,newOrder)
+                    await this.$store.dispatch('list/editList', {
+                        boardId: this.board.id,
+                        id: e.component.data.id,
+                        order: newOrder
+                    })
+
+                }
+
+            }
+            
     }
 }
 </script>

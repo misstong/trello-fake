@@ -1,10 +1,10 @@
 <template>
-    <div class="list-wrap list-wrap-content">
-
-        <div class="list">
-            <div class="list-header">
-                <textarea class="form-field-input" ref="newBoardListName" :value="data.name" @blur="editListName"></textarea>
-                <div class="extras-menu">
+    <div class="list-wrap list-wrap-content" :data-order="data.order">
+        <div class="list-placeholder" ref="listPlaceholder"></div>
+        <div class="list" ref="list">
+            <div class="list-header" ref="listHeader">
+                <textarea class="form-field-input" ref="newBoardListName" :value="data.name" @mousedown.prevent @blur="editListName"></textarea>
+                <div class="extras-menu" @mousedown.self.prevent>
                     <span class="icon icon-more"></span>
                 </div>
             </div>
@@ -29,6 +29,18 @@
     
 </template>
 <style scoped>
+/* .list-wrap.list-placeholder {
+    display: none;
+} */
+.list-wrap .list-placeholder {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 0;
+    background-color: rgba(0,0,0,.12);
+    border-radius: 3px;
+}
 .form-field-input{
     background: transparent;
     resize: none;
@@ -57,6 +69,7 @@
     box-sizing: border-box;
     display: inline-block;
     margin: 0 4px;
+    position: relative;
 }
 .list-header{
     padding: 10px 36px 10px 8px;
@@ -141,7 +154,15 @@ export default {
     },
     data(){
         return {
-            listAdding: false
+            listAdding: false,
+            drag: {
+                    isDown: false,
+                    isDrag: false,
+                    downClientX: 0,
+                    downClientY: 0,
+                    downElementX: 0,
+                    downElementY: 0
+                },
         }
     },
     computed: {
@@ -155,7 +176,81 @@ export default {
             await this.$store.dispatch('card/getCards', this.data.id);
         }
     },
+    mounted(){
+        // console.log(this.dragDown)
+        console.log('dragstart',this)//dragStart函数在_events里
+        this.$refs.listHeader.addEventListener('mousedown', this.dragDown)
+        document.addEventListener('mousemove', this.dragMove);
+            document.addEventListener('mouseup', this.dragUp);
+    },
     methods: {
+        dragDown(e){
+            console.log('mousedown',e)
+            this.drag.isDown = true
+            this.drag.downClientX = e.clientX;
+            this.drag.downClientY = e.clientY;
+
+            const el = this.$refs.list
+            let pos = el.getBoundingClientRect();
+            this.drag.downElementX = pos.x 
+            this.drag.downElementY = pos.y
+            console.log(pos)
+        },
+        dragMove(e){
+            if(this.drag.isDown){
+                let listElement = this.$refs.list
+                let x = e.clientX - this.drag.downClientX
+                let y = e.clientY - this.drag.downClientY
+
+                if (x > 10 || y > 10) {
+                    if (!this.drag.isDrag) {
+                        this.drag.isDrag = true
+                        
+                        this.$refs.listPlaceholder.style.height = listElement.offsetHeight + 'px';
+                        listElement.style.position = "absolute"
+                        listElement.style.zIndex = 99999;
+                        listElement.style.transform = 'rotate(5deg)';
+                        document.body.appendChild(listElement);//因为父元素是list设了position:relative,拖拽中元素是absolute于body所以加到document中
+                    
+                        this.$emit('dragStart', {
+                            component: this
+                        })
+                    }
+                    listElement.style.left = this.drag.downElementX + x + 'px';
+                    listElement.style.top = this.drag.downElementY + y + 'px';
+
+                    this.$emit('dragMove',{
+                        component: this,
+                        x: e.clientX,
+                        y: e.clientY
+                    })
+                }
+
+            }
+        },
+        dragUp(e){//移动过程中里面的listElement会更换父节点，外面的list元素会在前后移动，移完后放回原父节点
+            if(this.drag.isDown) {
+                if(this.drag.isDrag) {
+                    let listElement = this.$refs.list;
+                    this.$refs.listPlaceholder.style.height = 0;
+                    listElement.style.position = 'relative';
+                        listElement.style.zIndex = 0;
+                        listElement.style.left = 0;
+                        listElement.style.top = 0;
+                        listElement.style.transform = 'rotate(0deg)';
+                    this.$el.appendChild(listElement);
+                    this.$emit('dragEnd', {
+                            component: this
+                        });
+                }else {
+                        if (e.path.includes(this.$refs.newBoardListName)) {
+                            this.$refs.newBoardListName.select();
+                        }
+                    }
+                this.drag.isDown = this.drag.isDrag = false;
+            }
+
+        },
        async editListName() {
             let {value} = this.$refs.newBoardListName;
             console.log('innerhtml', this.$refs.newBoardListName)

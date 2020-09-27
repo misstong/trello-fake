@@ -17,7 +17,7 @@
         </a>
         <t-popup>
             <button class="avatar">
-                    <span>tt</span>
+                    <span>{{user.name[0].toUpperCase()}}</span>
              </button>
               <t-popup-menu slot="content" :items='menuItems' @command='command'></t-popup-menu>
         </t-popup>
@@ -30,6 +30,7 @@
 <script>
 import TPopup from '@/components/TPopup';
 import TPopupMenu from '@/components/TPopupMenu'
+import { mapState } from 'vuex';
 
 export default {
     name:'THeader',
@@ -44,6 +45,11 @@ export default {
             ]
         }
     },
+    computed:{
+        ...mapState('user',{
+            user: state => state.info
+        })
+    },
     methods:{
         command(cmd) {
             switch(cmd){
@@ -57,7 +63,7 @@ export default {
 
         },
         logout() {
-            // this.$store.dispatch('user/logout')
+            this.$store.dispatch('user/logout')
             console.log('logout')
             //todo
             this.$router.push({name:'Login'})

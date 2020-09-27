@@ -10,6 +10,18 @@ export default {
         updateUserInfo: (state, data) =>{
             state.info = data;
             localStorage.setItem('user',JSON.stringify(data))
+        },
+        initUserInfo: state=>{
+            try {
+                let data = JSON.parse(localStorage.getItem('user'))
+                state.info = data
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        removeUserInfo: (state) => {
+            state.info = null;
+            localStorage.removeItem('user');
         }
     },
     actions: {
@@ -28,6 +40,9 @@ export default {
             } catch(e) { console.log('');throw e}
 
             
+        },
+        logout: async ({commit}) => {
+            commit('removeUserInfo');
         }
     }
 }
